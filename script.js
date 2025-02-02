@@ -27,19 +27,14 @@ const calc = document.querySelector('#Calculator');
 const operatorSymbol = document.querySelectorAll('.symbol');
 const compute = document.querySelector('.compute');
 
-variableAssignment();
+
 //** As the e.target.data.value cannot be reset to initial, decided to push the current value to an array
-// Initialize the firstNum and secondNum variable after each eval*/
+// Initialize the firstNum and secondNum variable after each eval
+// Putting the condition where it results for the next condition to be true means it will also execute that statement. To correct this, larger value were switched so that it will be called and evaluated first. So that any values will be evaluated again on the next function call*/
 operatorSymbol.forEach(btn => {
   btn.addEventListener('click', function(e){
-    if (expression.length == 2 || expression.length < 2){
-      operator = e.target.dataset.operator;
-      expression.push(firstNum, operator);
-      firstNum = '';
-    }
-    if (expression.length > 2) {
+    if (expression.length >= 2) {
       expression.push(secondNum);
-      secondNum = '';
       evalExpression(expression);
       display.textContent = result;
       firstNum = result;
@@ -48,37 +43,34 @@ operatorSymbol.forEach(btn => {
       expression.splice(1,1,operator);
       console.log(expression);
       firstNum = '';
+      secondNum = '';
     }
-    
-    
-    
+    if (expression.length < 2 ){
+      operator = e.target.dataset.operator;
+      expression.push(firstNum, operator);
+      firstNum = '';
+    }
   }); 
 } )
 
-//As for the moment, until such time that the code can be much more concise and efficient, resorted to  adding functionality )to the buttons. By adding an event listeners inside a function, a conditional statement is implemented to which variable a value will be assigned
-function variableAssignment() {
-  if (expression.length == 0) {
-    btns.forEach(btn => {
-      btn.addEventListener('click', function(e){
-        display.textContent = '';
-         firstNum += e.target.dataset.value;
-        display.textContent = firstNum;
-        console.log(firstNum);
-      })
+//Calling a function with eventListeners inside will need the function to be called each time a value will need  to be changed. Removed the listener inside the function and adds the conditional statement inside of it instead.
+btns.forEach(btn => {
+  btn.addEventListener('click', function(e){
+    if (expression.length < 1) {
+      display.textContent = '';
+        firstNum += e.target.dataset.value;
+      display.textContent = firstNum;
+      console.log(firstNum);
     }
-  )
-} else if (expression.length > 2 || expression.length == 2 ) {
-  btns.forEach(btn => {
-    btn.addEventListener('click', function(e){
+    if (expression.length >= 2) {
       display.textContent = ''; 
       secondNum += e.target.dataset.value;
       display.textContent = secondNum;
+      }
     })
   }
 )
-}
-}
-
+ 
 compute.addEventListener('click', function() {
   expression.push(secondNum);
   secondNum = '';
