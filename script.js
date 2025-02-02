@@ -28,15 +28,31 @@ const operatorSymbol = document.querySelectorAll('.symbol');
 const compute = document.querySelector('.compute');
 
 variableAssignment();
-
-//As the e.target.data.value cannot be reset to initial, decided to push the current value to an array
+//**As the e.target.data.value cannot be reset to initial, decided to push the current value to an array
 operatorSymbol.forEach(btn => {
   btn.addEventListener('click', function(e){
-    operator = e.target.dataset.operator;
-    expression.push(firstNum, operator);
-    firstNum = '';
-
-    variableAssignment();
+    if (expression.length == 2 || expression.length < 2){
+      operator = e.target.dataset.operator;
+      expression.push(firstNum, operator);
+      firstNum = '';
+      variableAssignment();
+      console.log(expression);
+    }
+    if (expression.length > 2) {
+      expression.push(secondNum);
+      console.log(expression);
+      secondNum = '';
+      console.log(expression);
+      evalExpression(expression);
+      display.textContent = result;
+      firstNum = result;
+      expression.splice(0, 1, firstNum);
+      operator = e.target.dataset.operator;
+      expression.splice(1,1,operator);
+    }
+    
+    
+    
   }); 
 } )
 
@@ -75,7 +91,7 @@ compute.addEventListener('click', function() {
 function evalExpression(arr) {
   let a = arr[0];
   let b = arr[2];
-  
+
   if (arr[1] == '*') {
     return result = multiply (a, b);
   }
