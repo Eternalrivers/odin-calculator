@@ -106,4 +106,5 @@ function evalExpression(arr) {
     return result = subtract (a, b);
   }
   
+  return Number(result.toFixed(9));
 }
