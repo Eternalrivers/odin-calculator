@@ -80,13 +80,16 @@ btns.forEach(btn => {
 )
  
 compute.addEventListener('click', function() {
-  expression.push(secondNum);
-  secondNum = '';
-  console.log(expression);
-  evalExpression(expression);
-  display.textContent = result;
-  firstNum = result;
-  expression.splice(0, 1, firstNum);
+  if (expression.length >= 2 && secondNum != '') {
+    expression.push(secondNum);
+    secondNum = '';
+    console.log(expression);
+    evalExpression(expression);
+    display.textContent = result;
+    firstNum = result;
+    expression.splice(0, 1, firstNum);
+  }
+  
 })
 
 function evalExpression(arr) {
