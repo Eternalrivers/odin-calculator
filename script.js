@@ -33,7 +33,11 @@ const compute = document.querySelector('.compute');
 // Putting the condition where it results for the next condition to be true means it will also execute that statement. To correct this, larger value were switched so that it will be called and evaluated first. So that any values will be evaluated again on the next function call*/
 operatorSymbol.forEach(btn => {
   btn.addEventListener('click', function(e){
-    if (expression.length >= 2) {
+    if (expression.at(-1) === '') {
+      expression.splice(-1, 1);
+      }
+    if (expression.length >= 2 && secondNum != ''
+    ) {
       expression.push(secondNum);
       evalExpression(expression);
       display.textContent = result;
@@ -49,6 +53,10 @@ operatorSymbol.forEach(btn => {
       operator = e.target.dataset.operator;
       expression.push(firstNum, operator);
       firstNum = '';
+    }
+    if (expression.length = 2) {
+      operator = e.target.dataset.operator;
+      expression.splice(1,1,operator )
     }
   }); 
 } )
@@ -77,6 +85,8 @@ compute.addEventListener('click', function() {
   console.log(expression);
   evalExpression(expression);
   display.textContent = result;
+  firstNum = result;
+  expression.splice(0, 1, firstNum);
 })
 
 function evalExpression(arr) {
