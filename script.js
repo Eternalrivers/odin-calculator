@@ -26,6 +26,8 @@ const display = document.querySelector('#display');
 const calc = document.querySelector('#Calculator');
 const operatorSymbol = document.querySelectorAll('.symbol');
 const compute = document.querySelector('.compute');
+const del = document.querySelector('#delete');
+
 
 
 //** As the e.target.data.value cannot be reset to initial, decided to push the current value to an array
@@ -56,7 +58,8 @@ operatorSymbol.forEach(btn => {
     }
     if (expression.length = 2) {
       operator = e.target.dataset.operator;
-      expression.splice(1,1,operator )
+      expression.splice(1,1,operator );
+      del.disabled = true;
     }
   }); 
 } )
@@ -64,6 +67,8 @@ operatorSymbol.forEach(btn => {
 //Calling a function with eventListeners inside will need the function to be called each time a value will need  to be changed. Removed the listener inside the function and adds the conditional statement inside of it instead.
 btns.forEach(btn => {
   btn.addEventListener('click', function(e){
+    del.disabled = false;
+
     if (expression.length < 1) {
       display.textContent = '';
         firstNum += e.target.dataset.value;
@@ -111,3 +116,25 @@ function evalExpression(arr) {
   
   return Number(result.toFixed(9));
 }
+
+// **Removes the latest inputted number as displayed on the screen.
+// If firstNum variable will not be reinitialize upon an '=' button pressed, the variable value will become e.target.dataset.value concatenated to the user input when the user resumes evaluating expressions.*/
+del.addEventListener('click', (e) => {
+  let displayText = display.textContent;
+  if (expression.length < 1) {
+    display.textContent = (displayText.slice (0, displayText.length -1));
+
+    firstNum = display.textContent;
+  }
+  if (expression.length < 3 && expression.length > 0) {
+    display.textContent = (displayText.slice (0, displayText.length -1));
+
+    secondNum = display.textContent;
+  }
+
+  if (expression.length === 3) {
+    expression = [];
+    firstNum = '';
+  }
+
+});
