@@ -21,13 +21,14 @@ let expression = [];
 let result;
 
 
+
 const btns = document.querySelectorAll('.digit');
 const display = document.querySelector('#display');
 const calc = document.querySelector('#Calculator');
 const operatorSymbol = document.querySelectorAll('.symbol');
 const compute = document.querySelector('.compute');
 const del = document.querySelector('#delete');
-
+const clearAll = document.querySelector('.clear');
 
 
 //** As the e.target.data.value cannot be reset to initial, decided to push the current value to an array
@@ -35,7 +36,6 @@ const del = document.querySelector('#delete');
 // Putting the condition where it results for the next condition to be true means it will also execute that statement. To correct this, larger value were switched so that it will be called and evaluated first. So that any values will be evaluated again on the next function call*/
 operatorSymbol.forEach(btn => {
   btn.addEventListener('click', function(e){
-
     if (expression.at(-1) === '') {
       expression.splice(-1, 1);
       }
@@ -74,7 +74,7 @@ btns.forEach(btn => {
 
     if (expression.length < 1) {
       display.textContent = '';
-        firstNum += e.target.dataset.value;
+      firstNum += e.target.dataset.value;
       display.textContent = firstNum;
       console.log(firstNum);
     }
@@ -99,6 +99,8 @@ compute.addEventListener('click', function() {
   }
   checkResult(result);
 })
+
+clearAll.addEventListener('click', reset);
 
 function evalExpression(arr) {
   let a = arr[0];
@@ -147,10 +149,22 @@ del.addEventListener('click', (e) => {
 });
 
 function checkResult (result) {
- let resultType = typeof result;
- if (resultType == 'string') {
+  if (result == "Cannot divide by zero") {
   console.log(result);
   operatorSymbol.forEach ((symbol) => symbol.disabled = true);
  }
 
 }
+
+function reset () {
+  operatorSymbol.forEach ((symbol) => symbol.disabled = false);
+
+  firstNum = '';
+  secondNum = '';
+  operator;
+  expression = [];
+  result = '';
+  display.textContent = '0'; 
+
+}
+
