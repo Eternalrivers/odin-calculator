@@ -35,6 +35,7 @@ const del = document.querySelector('#delete');
 // Putting the condition where it results for the next condition to be true means it will also execute that statement. To correct this, larger value were switched so that it will be called and evaluated first. So that any values will be evaluated again on the next function call*/
 operatorSymbol.forEach(btn => {
   btn.addEventListener('click', function(e){
+
     if (expression.at(-1) === '') {
       expression.splice(-1, 1);
       }
@@ -61,12 +62,14 @@ operatorSymbol.forEach(btn => {
       expression.splice(1,1,operator );
       del.disabled = true;
     }
+    checkResult(result);
   }); 
 } )
 
 //Calling a function with eventListeners inside will need the function to be called each time a value will need  to be changed. Removed the listener inside the function and adds the conditional statement inside of it instead.
 btns.forEach(btn => {
   btn.addEventListener('click', function(e){
+    checkResult();
     del.disabled = false;
 
     if (expression.length < 1) {
@@ -94,7 +97,7 @@ compute.addEventListener('click', function() {
     firstNum = result;
     expression.splice(0, 1, firstNum);
   }
-  
+  checkResult(result);
 })
 
 function evalExpression(arr) {
@@ -105,7 +108,11 @@ function evalExpression(arr) {
     return result = multiply (a, b);
   }
   if (arr[1] == '/') {
-    return result = divide (a, b);
+    if (b == 0) {
+      return result = "Cannot divide by zero";
+    } else {
+      return result = divide (a, b);
+    }
   }
   if (arr[1] == '+') {
     return result = add (Number(a), Number(b));
@@ -138,3 +145,12 @@ del.addEventListener('click', (e) => {
   }
 
 });
+
+function checkResult (result) {
+ let resultType = typeof result;
+ if (resultType == 'string') {
+  console.log(result);
+  operatorSymbol.forEach ((symbol) => symbol.disabled = true);
+ }
+
+}
