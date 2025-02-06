@@ -117,20 +117,24 @@ function evalExpression(arr) {
   let b = arr[2];
 
   if (arr[1] == '*') {
-    return result = multiply (a, b);
+    const num = multiply (a, b);
+    return result = round (num, 9);
   }
   if (arr[1] == '/') {
     if (b == 0) {
       return result = "Cannot divide by zero";
     } else {
-      return result = divide (a, b);
+      const num = divide (a, b);
+      return result = round (num, 9);
     }
   }
   if (arr[1] == '+') {
-    return result = add (Number(a), Number(b));
+    const num = add (Number(a), Number(b));
+    return result = round (num, 9);
   }
   if (arr[1] == '-') {
-    return result = subtract (a, b);
+    const num = subtract (a, b);
+    return result = round (num, 9);
   }
   
   
