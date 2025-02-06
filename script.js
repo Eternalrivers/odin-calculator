@@ -29,6 +29,8 @@ const operatorSymbol = document.querySelectorAll('.symbol');
 const compute = document.querySelector('.compute');
 const del = document.querySelector('#delete');
 const clearAll = document.querySelector('.clear');
+const decimalSeparator = document.querySelector('#decimal');
+const btn = document.querySelector('button');
 
 
 //** As the e.target.data.value cannot be reset to initial, decided to push the current value to an array
@@ -43,6 +45,7 @@ operatorSymbol.forEach(btn => {
     ) {
       expression.push(secondNum);
       evalExpression(expression);
+      round(result, 9);
       display.textContent = result;
       firstNum = result;
       expression.splice(0, 1, firstNum);
@@ -62,6 +65,7 @@ operatorSymbol.forEach(btn => {
       expression.splice(1,1,operator );
       del.disabled = true;
     }
+    checkDecimalSeparator(e.target);
     checkResult(result);
   }); 
 } )
@@ -71,17 +75,22 @@ btns.forEach(btn => {
   btn.addEventListener('click', function(e){
     checkResult();
     del.disabled = false;
+    
 
     if (expression.length < 1) {
+      checkDecimalSeparator(firstNum);
       display.textContent = '';
       firstNum += e.target.dataset.value;
       display.textContent = firstNum;
       console.log(firstNum);
+
     }
     if (expression.length >= 2) {
+      checkDecimalSeparator(secondNum)
       display.textContent = ''; 
       secondNum += e.target.dataset.value;
       display.textContent = secondNum;
+
       }
     })
   }
@@ -93,6 +102,7 @@ compute.addEventListener('click', function() {
     secondNum = '';
     console.log(expression);
     evalExpression(expression);
+    
     display.textContent = result;
     firstNum = result;
     expression.splice(0, 1, firstNum);
@@ -123,7 +133,7 @@ function evalExpression(arr) {
     return result = subtract (a, b);
   }
   
-  return Number(result.toFixed(9));
+  
 }
 
 // **Removes the latest inputted number as displayed on the screen.
@@ -168,3 +178,24 @@ function reset () {
 
 }
 
+btn.addEventListener('click', function () {
+  if (expression.length < 1) {
+  checkDecimalSeparator(firstNum);
+  }
+  if (expression.length >= 2) {
+  checkDecimalSeparator(secondNum);
+  }
+
+});
+function checkDecimalSeparator (a) {
+  if( /\./.test(a)){
+    decimalSeparator.disabled = true;
+  }
+  else {
+    decimalSeparator.disabled = false;
+  }
+}
+
+function round(value, decimals) {
+  return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+}
