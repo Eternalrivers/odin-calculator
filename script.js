@@ -14,13 +14,20 @@ function divide (a, b) {
   return a/b;
 }
 
+function checkResult (result) {
+  if (result == "Cannot divide by zero") {
+  console.log(result);
+  operatorSymbol.forEach ((symbol) => symbol.disabled = true);
+
+ }
+
+}
+
 let firstNum = '';
 let secondNum = '';
 let operator;
 let expression = [];
 let result;
-
-
 
 const btns = document.querySelectorAll('.digit');
 const display = document.querySelector('#display');
@@ -32,7 +39,6 @@ const clearAll = document.querySelector('.clear');
 const decimalSeparator = document.querySelector('#decimal');
 const btn = document.querySelector('button');
 
-
 //** As the e.target.data.value cannot be reset to initial, decided to push the current value to an array
 // Initialize the firstNum and secondNum variable after each eval
 // Putting the condition where it results for the next condition to be true means it will also execute that statement. To correct this, larger value were switched so that it will be called and evaluated first. So that any values will be evaluated again on the next function call*/
@@ -40,12 +46,11 @@ operatorSymbol.forEach(btn => {
   btn.addEventListener('click', function(e){
     if (expression.at(-1) === '') {
       expression.splice(-1, 1);
-      }
-    if (expression.length >= 2 && secondNum != ''
-    ) {
+
+    }
+    if (expression.length >= 2 && secondNum != '') {
       expression.push(secondNum);
       evalExpression(expression);
-      round(result, 9);
       display.textContent = result;
       firstNum = result;
       expression.splice(0, 1, firstNum);
@@ -54,19 +59,23 @@ operatorSymbol.forEach(btn => {
       console.log(expression);
       firstNum = '';
       secondNum = '';
+
     }
     if (expression.length < 2 ){
       operator = e.target.dataset.operator;
       expression.push(firstNum, operator);
       firstNum = '';
+
     }
     if (expression.length = 2) {
       operator = e.target.dataset.operator;
       expression.splice(1,1,operator );
       del.disabled = true;
+
     }
     checkDecimalSeparator(e.target);
     checkResult(result);
+
   }); 
 } )
 
@@ -76,13 +85,12 @@ btns.forEach(btn => {
     checkResult();
     del.disabled = false;
     
-
     if (expression.length < 1) {
-      checkDecimalSeparator(firstNum);
       display.textContent = '';
       firstNum += e.target.dataset.value;
       display.textContent = firstNum;
       console.log(firstNum);
+      checkDecimalSeparator(firstNum);
 
     }
     if (expression.length >= 2) {
@@ -106,8 +114,10 @@ compute.addEventListener('click', function() {
     display.textContent = result;
     firstNum = result;
     expression.splice(0, 1, firstNum);
+
   }
   checkResult(result);
+
 })
 
 clearAll.addEventListener('click', reset);
@@ -119,25 +129,28 @@ function evalExpression(arr) {
   if (arr[1] == '*') {
     const num = multiply (a, b);
     return result = round (num, 9);
+
   }
   if (arr[1] == '/') {
     if (b == 0) {
       return result = "Cannot divide by zero";
+
     } else {
       const num = divide (a, b);
       return result = round (num, 9);
+
     }
   }
   if (arr[1] == '+') {
     const num = add (Number(a), Number(b));
     return result = round (num, 9);
+
   }
   if (arr[1] == '-') {
     const num = subtract (a, b);
     return result = round (num, 9);
+
   }
-  
-  
 }
 
 // **Removes the latest inputted number as displayed on the screen.
@@ -162,14 +175,6 @@ del.addEventListener('click', (e) => {
 
 });
 
-function checkResult (result) {
-  if (result == "Cannot divide by zero") {
-  console.log(result);
-  operatorSymbol.forEach ((symbol) => symbol.disabled = true);
- }
-
-}
-
 function reset () {
   operatorSymbol.forEach ((symbol) => symbol.disabled = false);
 
@@ -185,21 +190,84 @@ function reset () {
 btn.addEventListener('click', function () {
   if (expression.length < 1) {
   checkDecimalSeparator(firstNum);
+
   }
   if (expression.length >= 2) {
   checkDecimalSeparator(secondNum);
+
   }
 
 });
 function checkDecimalSeparator (a) {
   if( /\./.test(a)){
     decimalSeparator.disabled = true;
+
   }
   else {
     decimalSeparator.disabled = false;
+
   }
 }
 
 function round(value, decimals) {
   return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+
 }
+    //` | code='${event.code}'`;
+window.addEventListener("keydown", (event) => {
+  const a = event.key;
+
+  if (/^\d+$/.test(a)) {
+    if (expression.length < 1){
+      checkDecimalSeparator(secondNum)
+      firstNum += `${event.key}`;
+      display.textContent = firstNum;
+
+    }
+    if (expression.length >= 2) {
+      checkDecimalSeparator(secondNum)
+      display.textContent = ''; 
+      secondNum += `${event.key}`;
+      display.textContent = secondNum;
+      
+    }
+  }
+  if (/[\/\+\-\*]/.test(a)) {
+    if (expression.at(-1) === '') {
+      expression.splice(-1, 1);
+  
+    }
+    if (expression.length >= 2 && secondNum != '') {
+      expression.push(secondNum);
+      evalExpression(expression);
+      display.textContent = result;
+      firstNum = result;
+      expression.splice(0, 1, firstNum);
+      operator = event.key;
+      expression.splice(1,1,operator);
+      console.log(expression);
+      firstNum = '';
+      secondNum = '';
+  
+    }
+    if (expression.length < 2 ){
+      operator = event.key;
+      expression.push(firstNum, operator);
+      firstNum = '';
+  
+    }
+    if (expression.length = 2) {
+      operator = event.key;
+      expression.splice(1,1,operator );
+      del.disabled = true;
+  
+    }
+    checkDecimalSeparator(event.key);
+    checkResult(result);
+  }
+    
+
+ 
+  }
+
+);
