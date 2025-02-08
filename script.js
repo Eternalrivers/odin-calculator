@@ -216,6 +216,7 @@ function round(value, decimals) {
     //` | code='${event.code}'`;
 window.addEventListener("keydown", (event) => {
   const a = event.key;
+  console.log(event.key);
 
   if (/^\d+$/.test(a)) {
     if (expression.length < 1){
@@ -235,7 +236,7 @@ window.addEventListener("keydown", (event) => {
   if (/[\/\+\-\*]/.test(a)) {
     if (expression.at(-1) === '') {
       expression.splice(-1, 1);
-  
+
     }
     if (expression.length >= 2 && secondNum != '') {
       expression.push(secondNum);
@@ -263,6 +264,21 @@ window.addEventListener("keydown", (event) => {
   
     }
     checkDecimalSeparator(event.key);
+    checkResult(result);
+  }
+  if (/=/.test(a) || a === 'Enter') {
+    if (expression.length >= 2 && secondNum != '') {
+      expression.push(secondNum);
+      secondNum = '';
+      console.log(expression);
+      evalExpression(expression);
+      
+      display.textContent = result;
+      firstNum = result;
+      expression.splice(0, 1, firstNum);
+  
+    }
+    
     checkResult(result);
   }
     
