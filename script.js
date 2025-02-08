@@ -5,7 +5,6 @@ function add(a, b) {
 function subtract (a, b) {
   return a - b;
 }
-
 function multiply (a, b) {
   return a * b;
 }
@@ -18,9 +17,7 @@ function checkResult (result) {
   if (result == "Cannot divide by zero") {
   console.log(result);
   operatorSymbol.forEach ((symbol) => symbol.disabled = true);
-
- }
-
+  }
 }
 
 let firstNum = '';
@@ -75,6 +72,7 @@ operatorSymbol.forEach(btn => {
     }
     checkDecimalSeparator(e.target);
     checkResult(result);
+    
 
   }); 
 } )
@@ -117,6 +115,7 @@ compute.addEventListener('click', function() {
 
 
   }
+  expression.splice(-1,1);//To prevent the operand from populating the array
   checkResult(result);
 
 })
@@ -199,6 +198,7 @@ btn.addEventListener('click', function () {
   }
 
 });
+
 function checkDecimalSeparator (a) {
   if( /\./.test(a)){
     decimalSeparator.disabled = true;
@@ -214,7 +214,7 @@ function round(value, decimals) {
   return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 
 }
-    //` | code='${event.code}'`;
+//Keyboard support
 window.addEventListener("keydown", (event) => {
   const a = event.key;
   console.log(event.key);
@@ -276,15 +276,27 @@ window.addEventListener("keydown", (event) => {
       
       display.textContent = result;
       firstNum = result;
-      expression.splice(0, 1, firstNum);
-      
+      expression.splice(0, 1, firstNum); 
   
     }
-    expression.splice(-1,1);
+    expression.splice(-1,1);//To prevent the operand from populating the array
+      
     checkResult(result);
   }
+  if (a === '.') {
+    if (expression.length < 1 && !/\./.test(firstNum)) {
+      firstNum += `${event.key}`;
+      display.textContent = firstNum;
+      checkDecimalSeparator(firstNum);
     
-
+      }
+      if (expression.length >= 2 && !/\./.test(secondNum)) {
+        secondNum += `${event.key}`;
+      checkDecimalSeparator(secondNum);
+    
+      }
+  }
+  
  
   }
 
