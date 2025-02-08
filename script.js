@@ -296,6 +296,24 @@ window.addEventListener("keydown", (event) => {
     
       }
   }
+  if (a === 'Backspace') {
+    let displayText = display.textContent;
+    if (expression.length < 1) {
+      display.textContent = (displayText.slice (0, displayText.length -1));
+
+      firstNum = display.textContent;
+    }
+    if (expression.length < 3 && expression.length > 0) {
+      display.textContent = (displayText.slice (0, displayText.length -1));
+
+      secondNum = display.textContent;
+    }
+
+    if (expression.length === 3) {
+      expression = [];
+      firstNum = '';
+    }
+  }
   
  
   }
