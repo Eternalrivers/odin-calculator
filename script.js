@@ -231,12 +231,18 @@ function round(value, decimals) {
   return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 
 }
+
 //Keyboard support
 window.addEventListener("keydown", (event) => {
   const a = event.key;
   console.log(event.key);
 
   if (/^\d+$/.test(a)) {
+    if (computed === true) {
+      reset();
+      computed = false;
+      
+    }
     if (expression.length < 1){
       checkDecimalSeparator(secondNum)
       firstNum += `${event.key}`;
@@ -252,6 +258,11 @@ window.addEventListener("keydown", (event) => {
     }
   }
   if (/[\/\+\-\*]/.test(a)) {
+    if (computed === true) {
+      secondNum = '';
+    }
+    computed = false;
+
     if (expression.at(-1) === '') {
       expression.splice(-1, 1);
 
@@ -287,13 +298,16 @@ window.addEventListener("keydown", (event) => {
   if (/=/.test(a) || a === 'Enter') {
     if (expression.length >= 2 && secondNum != '') {
       expression.push(secondNum);
-      //secondNum = '';
-      console.log(expression);
       evalExpression(expression);
       
       display.textContent = result;
       firstNum = result;
+
       expression.splice(0, 1, firstNum); 
+
+      computed = true;
+
+
   
     }
     expression.splice(-1,1);//To prevent the operand from populating the array
@@ -315,6 +329,11 @@ window.addEventListener("keydown", (event) => {
   }
   if (a === 'Backspace') {
     let displayText = display.textContent;
+    
+    if (computed) {
+      reset();
+      computed = false;
+    }
     if (expression.length < 1) {
       display.textContent = (displayText.slice (0, displayText.length -1));
 
