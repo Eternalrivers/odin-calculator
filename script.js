@@ -60,7 +60,7 @@ operatorSymbol.forEach(btn => {
       firstNum = '';
       secondNum = '';
 
-    }
+    } 
     if (expression.length < 2 ){
       operator = e.target.dataset.operator;
       expression.push(firstNum, operator);
@@ -103,17 +103,18 @@ btns.forEach(btn => {
     })
   }
 )
- 
+
 compute.addEventListener('click', function() {
   if (expression.length >= 2 && secondNum != '') {
     expression.push(secondNum);
-    secondNum = '';
+    //secondNum = '';
     console.log(expression);
     evalExpression(expression);
     
     display.textContent = result;
     firstNum = result;
     expression.splice(0, 1, firstNum);
+
 
   }
   checkResult(result);
@@ -269,16 +270,17 @@ window.addEventListener("keydown", (event) => {
   if (/=/.test(a) || a === 'Enter') {
     if (expression.length >= 2 && secondNum != '') {
       expression.push(secondNum);
-      secondNum = '';
+      //secondNum = '';
       console.log(expression);
       evalExpression(expression);
       
       display.textContent = result;
       firstNum = result;
       expression.splice(0, 1, firstNum);
+      
   
     }
-    
+    expression.splice(-1,1);
     checkResult(result);
   }
     
