@@ -25,6 +25,7 @@ let secondNum = '';
 let operator;
 let expression = [];
 let result;
+let computed = false;
 
 const btns = document.querySelectorAll('.digit');
 const display = document.querySelector('#display');
@@ -41,6 +42,11 @@ const btn = document.querySelector('button');
 // Putting the condition where it results for the next condition to be true means it will also execute that statement. To correct this, larger value were switched so that it will be called and evaluated first. So that any values will be evaluated again on the next function call*/
 operatorSymbol.forEach(btn => {
   btn.addEventListener('click', function(e){
+    if (computed === true) {
+      secondNum = '';
+    }
+    computed = false;
+
     if (expression.at(-1) === '') {
       expression.splice(-1, 1);
 
@@ -82,6 +88,11 @@ btns.forEach(btn => {
   btn.addEventListener('click', function(e){
     checkResult();
     del.disabled = false;
+    if (computed === true) {
+      reset();
+      computed = false;
+      
+    }
     
     if (expression.length < 1) {
       display.textContent = '';
@@ -112,6 +123,7 @@ compute.addEventListener('click', function() {
     display.textContent = result;
     firstNum = result;
     expression.splice(0, 1, firstNum);
+    computed = true;
 
 
   }
@@ -157,6 +169,11 @@ function evalExpression(arr) {
 // If firstNum variable will not be reinitialize upon an '=' button pressed, the variable value will become e.target.dataset.value concatenated to the user input when the user resumes evaluating expressions.*/
 del.addEventListener('click', (e) => {
   let displayText = display.textContent;
+  
+  if (computed) {
+    reset();
+    computed = false;
+  }
   if (expression.length < 1) {
     display.textContent = (displayText.slice (0, displayText.length -1));
 
